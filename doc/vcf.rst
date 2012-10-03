@@ -1,15 +1,22 @@
+======================
+Working with VCF files
+======================
+
+Annotating VCF Files
+====================
+
 snpEff
 ------
 
 Download data
-=============
+^^^^^^^^^^^^^
 
 .. code-block:: bash 
 
     java -jar /data/CCRBioinfo/biowulf/local/snpEff_3_0/snpEff.jar download -c /data/CCRBioinfo/biowulf/local/snpEff_3_0/snpEff.config GRCh37.66
 
 Run effect prediction
-==========================
+^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: bash 
 
@@ -20,7 +27,7 @@ snpSift
 -------
 
 Annotate with dbSNP
-========================
+^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: bash
  
@@ -29,7 +36,7 @@ Annotate with dbSNP
 
 
 Annotate with dbNSFP
-====================
+^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: bash 
 
@@ -42,8 +49,14 @@ Annotate with dbNSFP
 
 
 Filtering
-=========
+^^^^^^^^^
 
 .. code-block:: bash 
 
     java -Xmx8g -jar /data/CCRBioinfo/biowulf/local/SnpSift_latest.jar filter '(na ID) & (ID =~ 'COSM') & !( ID =~ 'rs')' -f 
+
+Working with VarScan VCF
+========================
+
+.. automodule:: seqtools.varscan
+   :members:
