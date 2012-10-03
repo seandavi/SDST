@@ -1,95 +1,13 @@
 #!/usr/bin/env python
 import argparse
 from itertools import izip
-import gzip
-from string import maketrans
 import subprocess
 import os
-from multiprocessing import Pool
 import collections
+from seqtools.utils import revcomp
+from seqtools.fastq import Fastq
 
 
-transtab = maketrans('ACGTN','TGCAN')
-
-revcompdict = {}
-def revcomp(sequence):
-    """Reverse complement a string
-
-    :param sequence: The DNA string (all caps)
-    """
-    if(sequence in revcompdict):
-        return revcompdict[sequence]
-    tmp=sequence[::-1].translate(transtab)
-    revcompdict[sequence]=tmp
-    return(tmp)
-
-
-def fileOpen(fname,mode='r'):
-    """Open a file, including gzip files
-
-    :param fname: The filename to open.  Gzip files are distinguished by ending in '.gz'
-    :param mode: File mode for opening [default 'r']
-    :returns: An open file handle"""
-    # gzip in python is REALLY slow, so use pipes instead.
-    if(fname.endswith('.gz')):
-        if(mode.startswith('r')):
-            return subprocess.Popen(['gunzip -c %s' % fname],stdout=subprocess.PIPE,shell=True).stdout
-        if(mode.startswith('w')):
-            return subprocess.Popen(['gzip > %s' % fname],stdin=subprocess.PIPE,shell=True).stdin
-    else:
-        return open(fname,'r')
-
-
-
-class FastqRecord(object):
-    """Very simple fastq class containing header, sequence, line3, and quality as strings"""
-    def __init__(self,header,sequence,line3,quality):
-        """Initialize a FastqRecord
-
-        :param header: header
-        :param sequence: sequence
-        :param line3: second header line from fastq record
-        :param quality: string quality"""
-        self.header=header
-        self.sequence=sequence
-        self.line3=line3
-        self.quality=quality
-
-    def __str__(self):
-        """String represendation, suitable for output to a fastq file"""
-        return "%s\n%s\n%s\n%s\n" % (self.header,self.sequence,self.line3,self.quality)
-    
-
-class Fastq(object):
-    def __init__(self,fname):
-        self.name = fname
-        self.fh = fileOpen(fname)
-        
-    def _getNextRecord(self):
-        x = []
-        for i in range(0,4):
-            nextLine=self.fh.next().strip()
-            x.append(nextLine)
-            if(nextLine==''):
-                return None
-        return(FastqRecord(x[0],x[1],x[2],x[3]))
-
-    def __iter__(self):
-        return self
-
-    def next(self):
-        tmp = self._getNextRecord()
-        if(tmp is None):
-            raise StopIteration
-        else:
-            return(tmp)
-
-    def name(self):
-        return self.fname
-
-    def close(self):
-        self.fh.close()
-    
 def isIndexRevComp(indexfile,indexes,n=500000):
     """Determine if the indexes are reverse complemented or not
     
