@@ -64,10 +64,18 @@ def fixLine(line):
     return "\t".join(line)
 
 def fixVarscanVcfFile(iterable):
-    """Takes an interator over a varscan VCF file and returns an iterator over fixed VCF lines, including header
-
+    """Takes an interator over a varscan VCF file and returns an iterator over fixed VCF lines, including header.
+    
     :param iterable: any iterable of the VCF lines
     :returns: An iterator over fixed VCF lines
+
+    Usage is like so:
+
+    >>> from seqtools.varscan import fixVarscanVcfFile
+    >>> varscan = fixVarscanVcfFile(open('filename.vcf','r'))
+    >>> for line in varscan:
+        print line
+        
     """
     for line in iterable:
         yield fixLine(line)
