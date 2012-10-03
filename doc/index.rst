@@ -10,7 +10,7 @@ Welcome to seqTools's documentation!
    :maxdepth: 2
 
    vcf
-
+   structuralVariation
 
 Indices and tables
 ==================
