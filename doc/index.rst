@@ -6,8 +6,6 @@
 Welcome to seqTools's documentation!
 ====================================
 
-Contents:
-
 .. toctree::
    :maxdepth: 2
 
