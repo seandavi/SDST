@@ -55,8 +55,6 @@ Filtering
 
     java -Xmx8g -jar /data/CCRBioinfo/biowulf/local/SnpSift_latest.jar filter '(na ID) & (ID =~ 'COSM') & !( ID =~ 'rs')' -f 
 
-Working with VarScan VCF
-========================
 
-.. automodule:: seqtools.varscan
-   :members:
+
+

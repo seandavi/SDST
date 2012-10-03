@@ -12,6 +12,7 @@ Welcome to seqTools's documentation!
    seqtool
    vcf
    structuralVariation
+   api
 
 Indices and tables
 ==================
