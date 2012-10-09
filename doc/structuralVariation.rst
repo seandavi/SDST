@@ -29,3 +29,12 @@ The next step is to use GASV to cluster and call the SVs:
 .. code-block:: bash
 
    /usr/local/bin/java64 -Xmx20g -jar /data/CCRBioinfo/biowulf/local/src/gasv/bin/GASV.jar --fast --batch 5_BD13EMACXX.361_BUSTARD-2012-07-05.fq.hg19.bwa.sorted.bam.gasv.in
+
+delly
+-----
+
+`DELLY <http://www.embl.de/~rausch/delly.html>`_ is an integrated structural variant prediction method that can detect deletions, tandem duplications, inversions and translocations at single-nucleotide resolution in short-read massively parallel sequencing data. It uses paired-ends and split-reads to sensitively and accurately delineate genomic rearrangements throughout the genome.  
+
+Installed in ``/data/CCRBioinfo/biowulf/local/delly``.
+
+
