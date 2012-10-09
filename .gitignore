@@ -3,3 +3,5 @@ seqtools.egg-info
 build
 *~
 _build
+*#
+.*

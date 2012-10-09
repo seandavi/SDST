@@ -9,8 +9,10 @@ Welcome to seqTools's documentation!
 .. toctree::
    :maxdepth: 2
 
+   seqtool
    vcf
    structuralVariation
+   api
 
 Indices and tables
 ==================

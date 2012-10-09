@@ -13,7 +13,7 @@ def fixVcf(opts):
         print line
 
 varscan_parser = subparsers.add_parser('varscan')
-varscan_subparsers = varscan_parser.add_subparsers()
+varscan_subparsers = varscan_parser.add_subparsers(help="VarScan subcommands")
 fixVcf_parser = varscan_subparsers.add_parser('fixVcf',
                                               help="Fix the FREQ field and the ALT field in varscan VCF output")
 fixVcf_parser.add_argument('-f','--varscan',default=sys.stdin,
