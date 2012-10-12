@@ -29,18 +29,22 @@ This will return the help for the demultiplexer.
 .. code-block:: bash
 
    usage: seqtool utils demultiplex [-h] [-1 READFILE1] [-2 READFILE2]
-                                    [-i INDEXFILE] [-x INDEX]
+				    [-i INDEXFILE] [-j INDEXFILE2] [-x INDEX]
 
    optional arguments:
      -h, --help            show this help message and exit
      -1 READFILE1, --readFile1 READFILE1
-                           read1 filename
+			   read1 filename
      -2 READFILE2, --readFile2 READFILE2
-                           read2 filename
+			   read2 filename
      -i INDEXFILE, --indexFile INDEXFILE
-                           index Filename
+			   index Filename
+     -j INDEXFILE2, --indexFile2 INDEXFILE2
+			   index Filename
      -x INDEX, --index INDEX
-                           The indexes, one per index
+			   The indexes, one per index or comma-separated pairs
+			   for dual-barcode indexing
+
 
 
 Fixing VarScan VCF Files

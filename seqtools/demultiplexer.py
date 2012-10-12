@@ -4,7 +4,7 @@ from itertools import izip
 import subprocess
 import os
 import collections
-from seqtools.utils import revcomp
+from seqtools.utils import revcomp,fileOpen
 from seqtools.fastq import Fastq
 
 
@@ -124,36 +124,64 @@ def demultiplex(readfile,
             os.rename(os.path.join(rpath2,'tmp.' + i +"_"+ rname2),
                       os.path.join(rpath2,i +"_"+ rname2))
 
-def main():
-    demultiplex(readfile='/data/CCRBioinfo/fastq/3_1_AD0P2BACXX.319_BUSTARD-2012-03-17.fq.gz',
-                indexfile='/data/CCRBioinfo/fastq/3_2_AD0P2BACXX.319_BUSTARD-2012-03-17.fq.gz',
-                indexes=('TGGTCA','CACTGT','ATTGGC'),
-                readfile2='/data/CCRBioinfo/fastq/3_3_AD0P2BACXX.319_BUSTARD-2012-03-17.fq.gz')
-    
-    exit(0)
+    # two readfiles, two indexfiles
+    if(readfile2 is not None) and (indexfile2 is not None):
+        rfile1 = Fastq(readfile)
+        rfile2 = Fastq(readfile2)
+        (rpath,rname) = os.path.split(readfile)
+        (rpath2,rname2) = os.path.split(readfile2)
+        ifile = Fastq(indexfile)
+        ifile2 = Fastq(indexfile2)
+        indexes = [tuple(x.split(',')) for x in indexes]
+        indexRevComp = isIndexRevComp(indexfile,[i[0] for i in indexes])
+        ofile1 = {}
+        ofile2 = {}
+        existingIndexes = []
+        for j in indexes:
+            i = ''.join(j)
+            ofname1 = os.path.join(rpath,i + "_" + rname)
+            ofname2 = os.path.join(rpath2,i + "_" + rname2)
+            if(os.path.exists(ofname1) and os.path.exists(ofname2)):
+                print ofname1,ofname2, " already exist, skipping"
+                existingIndexes.append(i)
+            else:
+                ofile1[i]=fileOpen('tmp.' + ofname1,'w')
+                ofile2[i]=fileOpen('tmp.' + ofname2,'w')
+        for i in existingIndexes:
+            indexes.remove(i)
+        if(len(indexes)==0):
+            exit(0)
+        indexlen = len(indexes[0][0])
+        for (r1,r2,i,i2) in izip(rfile1,rfile2,ifile,ifile2):
+            try:
+                if indexRevComp:
+                    ir = revcomp(i.sequence[:indexlen])
+                    ir2 = revcomp(i2.sequence[:indexlen])
+                    istr = ir+ir2
+                    ofile1[istr].write(str(r1))
+                    ofile2[istr].write(str(r2))
+                else:
+                    ir = i.sequence[:indexlen]
+                    ir2 = i2.sequence[:indexlen]
+                    istr = ir+ir2
+                    ofile1[istr].write(str(r1))
+                    ofile2[istr].write(str(r2))
+            except KeyError:
+                pass
+        rfile1.close()
+        rfile2.close()
+        ifile.close()
+        ifile2.close()
+        for ofile in ofile1.values():
+            ofile.close()
+        for ofile in ofile2.values():
+            ofile.close()
+        for i in indexes:
+            ofname1 = os.path.join(rpath,''.join(i) + "_" + rname)
+            ofname2 = os.path.join(rpath2,''.join(i) + "_" + rname2)
+            os.rename(os.path.join(rpath,'tmp.' + ofname1),
+                      os.path.join(rpath,ofname1))
+            os.rename(os.path.join(rpath2,'tmp.'+ofname2),
+                      os.path.join(rpath2,ofname2))
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-1','--readFile1',
-                        help="read1 filename")
-    parser.add_argument('-2','--readFile2',
-                        help="read2 filename")
-    parser.add_argument('-i','--indexFile',
-                        help="index Filename")
-    parser.add_argument('-x','--index',type=str,action='append',
-                        help="The indexes, one per index")
-
-    opts = parser.parse_args()
-
-
-    if(opts.readFile2):
-        demultiplex(readfile = opts.readFile1,
-                    readfile2 = opts.readFile2,
-                    indexfile = opts.indexFile,
-                    indexes = opts.index)
-    else:
-        demultiplex(readfile = opts.readFile1,
-                    indexfile = opts.indexFile,
-                    indexes = opts.index)
-        
 
