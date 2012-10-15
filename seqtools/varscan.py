@@ -4,6 +4,8 @@ parse VCF output from VarScan
 and fix the ALT column
 to adhere with VCF specifications
 """
+import re
+
 def fixLine(line):
     """Fix a varscan VCF line
 
@@ -40,9 +42,9 @@ def fixLine(line):
         if "/" not in ALT:
             if ALT[0] == "+":
                 R = REF
-                A = REF+ALT[1:]
+                A = REF + re.sub(r'^[+-][\d]?','',ALT)
             elif ALT[0] == "-":
-                R = REF+ALT[1:]
+                R = REF + re.sub(r'^[+-][\d]?','',ALT)
                 A = REF
         else:
             Ins = [p[1:] for p in ALT.split("/") if p[0]=="+"]
