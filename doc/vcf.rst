@@ -55,6 +55,10 @@ Filtering
 
     java -Xmx8g -jar /data/CCRBioinfo/biowulf/local/SnpSift_latest.jar filter '(na ID) & (ID =~ 'COSM') & !( ID =~ 'rs')' -f 
 
+Melting to Tab-delimited Text
+-----------------------------
+
+See ``seqtool vcf melt`` for details of command-line operation or seqtools.vcf.vcfMelt for API usage.
 
 
 
