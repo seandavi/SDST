@@ -20,6 +20,12 @@ seqtools.varscan
 .. automodule:: seqtools.varscan
    :members:
 
+seqtools.vcf
+============
+
+.. automodule:: seqtools.vcf
+   :members:
+
 seqtools.demultiplexer
 ======================
 

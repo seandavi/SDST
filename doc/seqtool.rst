@@ -59,3 +59,17 @@ Fixing VarScan VCF Files
      -h, --help            show this help message and exit
      -f VARSCAN, --varscan VARSCAN
                            Filename of varscan VCF file [default=stdin]
+
+Melt a VCF File to Tab-Delimited Text
+-------------------------------------
+
+A seqtool vcf subcommand, melt, can take a VCF file (including multisample VCFs) and output a
+tab-delimited text file, expanding all the various INFO and FORMAT columns as well as the
+snpEff output.  For snpEff, note that the highest impact variant is chosen (based on the 
+snpEff classification scheme.   
+
+.. code-block:: bash
+
+   $ seqtool vcf melt -f PATEEM_DNA.snp_fixed.final.vcf.gz -o PATEEM_DNA.snp_fixed.final.txt
+
+
