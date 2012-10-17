@@ -13,7 +13,6 @@ def meltVcf(opts):
         outfile = open(opts.outfile,'w')
     else:
         outfile = sys.stdout
-    print v,outfile
     seqtools.vcf.vcfMelt(v,outfile)
     outfile.close()
 
