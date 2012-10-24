@@ -34,8 +34,18 @@ def demultiplex(readfile,
                 indexfile,
                 indexes,
                 readfile2=None,
-                indexfile2=None,
-                indexes2=None):
+                indexfile2=None):
+    """Demultiplex from separate FASTQ files.
+
+    All FASTQ files can be gzipped (with suffix .gz).
+
+    :param readfile: The filename of the first fastq file
+    :param indexfile: The filename of the first index fastq file
+    :param indexes: An iterable of indexes.  If dual-barcoding is used, the indexes should be comma-separated strings, one string for each barcode pair.
+    :param indexfile2: The filename of the second index fastq file.  If this parameter is included, then the indexes parameter should be a set of comma-separated pairs of indexes.  
+    :param readfile2: The filename of the second fastq file [optional]
+    
+    """
 
     # single readfile, single indexfile
     if(readfile2 is None) and (indexfile2 is None):

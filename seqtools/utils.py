@@ -1,5 +1,6 @@
 from string import maketrans
 import subprocess
+import tempfile
 
 transtab = maketrans('ACGTNacgtn','TGCANtgcan')
 
@@ -36,4 +37,43 @@ def fileOpen(fname,mode='r'):
             return subprocess.Popen(['gzip > %s' % fname],stdin=subprocess.PIPE,shell=True).stdin
     else:
         return open(fname,'r')
+
+
+def sortVcfBySequence(vcf,seqnames,seqmap=None):
+    """Sort a tabixed VCF file by sequence names
+
+    >>> import vcf
+    >>> v = vcf.Reader('vcf.gz')
+    >>> from seqtools.utils import sortVcfBySequence
+    >>> w = vcf.Writer(open('sorted.vcf','w'),v)
+    >>> faifile = open('ucsc.hg19.fasta.fai')
+    >>> seqnames = [x.split('\t')[0] for x in faifile]
+    >>> for rec in sortVcfBySequence(v,seqnames):
+        w.write_record(rec)
+    >>> w.close()
+    >>> v.close()"""
+
+    if(seqmap):
+        revseqmap = dict([(v,k) for (k,v) in seqmap.items()])
+
+    print seqmap
+    
+    for s in seqnames:
+        # seqmap maps seqnames to tabix index names
+        if(seqmap is not None):
+            region = vcf.fetch(seqmap[s],start=0)
+        else:
+            try:
+                region = vcf.fetch(s,start=0)
+                print region
+            except ValueError:
+                print "here",s
+                continue
+        print region
+        print s
+        for rec in region:
+            if(seqmap is not None):
+                rec.CHROM=revseqmap[rec.CHROM]
+            yield rec
+    
 
