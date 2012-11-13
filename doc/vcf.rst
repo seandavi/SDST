@@ -31,7 +31,7 @@ Annotate with dbSNP
 
 .. code-block:: bash
  
-    java -Xmx8g -jar /data/CCRBioinfo/biowulf/local/SnpSift_latest.jar annotate  data/CCRBioinfo/public/GATK/bundle/1.5/hg19/dbsnp_135.hg19.excluding_sites_after_129.vcf tmp2.vcf > tmp2.dbsnp.vcf
+    java -Xmx8g -jar /data/CCRBioinfo/biowulf/local/SnpSift_latest.jar annotate  /data/CCRBioinfo/public/GATK/bundle/1.5/hg19/dbsnp_135.hg19.excluding_sites_after_129.vcf tmp2.vcf > tmp2.dbsnp.vcf
 
 
 
@@ -51,6 +51,8 @@ Annotate with dbNSFP
 Filtering
 ^^^^^^^^^
 
+The snpSift package allows very flexible filtering options.  An example is given here:
+
 .. code-block:: bash 
 
     java -Xmx8g -jar /data/CCRBioinfo/biowulf/local/SnpSift_latest.jar filter '(na ID) & (ID =~ 'COSM') & !( ID =~ 'rs')' -f 
@@ -58,7 +60,7 @@ Filtering
 Melting to Tab-delimited Text
 -----------------------------
 
-See ``seqtool vcf melt`` for details of command-line operation or seqtools.vcf.vcfMelt for API usage.
+VCF files are quite difficult to read and filter in something like Excel.  The term, "vcf melting", refers to taking a VCF file and pulling out the various parts into separate tab-delimited columns.  See ``seqtool vcf melt`` for details of command-line operation or seqtools.vcf.vcfMelt for API usage.
 
 
 
