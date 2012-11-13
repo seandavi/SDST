@@ -52,7 +52,7 @@ Fixing VarScan VCF Files
 
 .. code-block:: bash
 
-   $ seqtools varscan fixVcf -h
+   $ seqtool varscan fixVcf -h
    usage: seqtool varscan fixVcf [-h] [-f VARSCAN]
 
    optional arguments:
