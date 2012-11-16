@@ -2,6 +2,29 @@
 Working with VCF files
 ======================
 
+Somatic Variant Calling
+=======================
+
+VarScan
+^^^^^^^
+
+A command line like this works well to generate a VCF file that contains
+putative somatic mutations:
+
+.. code-block:: bash
+
+   java64 Xmx4g -jar VarScan.jar somatic \
+      <( samtools mpileup -C50 -BQ0 -d 1000000 -A -f FASTAFILE NORMALBAM ) \
+      <( samtools mpileup -C50 -d 1000000 -A -f FASTAFILE TUMORBAM ) \
+      PREFIX --output-vcf -min-var-freq 0.05
+
+The `FASTAFILE`, `NORMALBAM`, and `TUMORBAM` should be self-explanatory.  The
+`PREFIX` should be replaced with the prefix for the .snp and .indel files 
+from VarScan.  The `min-var-freq` setting turns up the sensitivity for 
+somatic variants; these may need to be filtered out later. 
+    
+
+
 Annotating VCF Files
 ====================
 
