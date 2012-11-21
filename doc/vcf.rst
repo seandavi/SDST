@@ -6,7 +6,7 @@ Somatic Variant Calling
 =======================
 
 VarScan
-^^^^^^^
+-------
 
 A command line like this works well to generate a VCF file that contains
 putative somatic mutations:
@@ -24,9 +24,13 @@ from VarScan.  The `min-var-freq` setting turns up the sensitivity for
 somatic variants; these may need to be filtered out later. 
     
 
+After generating the VarScan VCF files, they need to be "fixed" using `seqtools varscan fixVcf` command-line script.  
+
 
 Annotating VCF Files
 ====================
+A few command-lines for annotating VCF files using snpEff and snpSift are given below.  In addition, one should run the GATK VariantAnnotator script to generate rich quality control information for the VCF files.  
+
 
 snpEff
 ------
