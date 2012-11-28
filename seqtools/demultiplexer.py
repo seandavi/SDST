@@ -57,7 +57,7 @@ def demultiplex(readfile,
         for i in indexes:
             ofname1 = os.path.join(rpath,i + "_" + rname)
             if(not os.path.exists(ofname1)):
-                ofile1[i]=fileOpen(os.path.join(rpath,"tmp." + i + "_" + rname),'w')
+                ofile1[i]=fileOpen(os.path.join(rpath,i + "_" + rname),'w')
             else:
                 print ofname1," already exists, skipping"
                 existingIndexes.append(i)
@@ -79,9 +79,9 @@ def demultiplex(readfile,
         ifile.close()
         for ofile in ofile1.values():
             ofile.close()
-        for i in indexes:
-            os.rename(os.path.join(rpath,'tmp.' + i + "_" + rname),
-                      os.path.join(rpath,i + "_" + rname))
+        ## for i in indexes:
+        ##     os.rename(os.path.join(rpath,'tmp.' + i + "_" + rname),
+        ##               os.path.join(rpath,i + "_" + rname))
             
     # two readfiles, single indexfile
     if(readfile2 is not None) and (indexfile2 is None):
@@ -101,8 +101,8 @@ def demultiplex(readfile,
                 print ofname1,ofname2, " already exist, skipping"
                 existingIndexes.append(i)
             else:
-                ofile1[i]=fileOpen(os.path.join(rpath,"tmp." + i + "_" + rname),'w')
-                ofile2[i]=fileOpen(os.path.join(rpath2,"tmp." + i + "_" + rname2),'w')
+                ofile1[i]=fileOpen(os.path.join(rpath,i + "_" + rname),'w')
+                ofile2[i]=fileOpen(os.path.join(rpath2,i + "_" + rname2),'w')
         for i in existingIndexes:
             indexes.remove(i)
         if(len(indexes)==0):
@@ -127,12 +127,12 @@ def demultiplex(readfile,
             ofile.close()
         for ofile in ofile2.values():
             ofile.close()
-        for i in indexes:
-            print os.path.join(rpath,'tmp.' + i + "_" + rname),                      os.path.join(rpath,i + "_"+rname)
-            os.rename(os.path.join(rpath,'tmp.' + i + "_" + rname),
-                      os.path.join(rpath,i + "_"+rname))
-            os.rename(os.path.join(rpath2,'tmp.' + i +"_"+ rname2),
-                      os.path.join(rpath2,i +"_"+ rname2))
+        ## for i in indexes:
+        ##     print os.path.join(rpath,'tmp.' + i + "_" + rname),os.path.join(rpath,i + "_"+rname)
+        ##     os.rename(os.path.join(rpath,'tmp.' + i + "_" + rname),
+        ##               os.path.join(rpath,i + "_"+rname))
+        ##     os.rename(os.path.join(rpath2,'tmp.' + i +"_"+ rname2),
+        ##               os.path.join(rpath2,i +"_"+ rname2))
 
     # two readfiles, two indexfiles
     if(readfile2 is not None) and (indexfile2 is not None):
@@ -155,8 +155,8 @@ def demultiplex(readfile,
                 print ofname1,ofname2, " already exist, skipping"
                 existingIndexes.append(i)
             else:
-                ofile1[i]=fileOpen('tmp.' + ofname1,'w')
-                ofile2[i]=fileOpen('tmp.' + ofname2,'w')
+                ofile1[i]=fileOpen(ofname1,'w')
+                ofile2[i]=fileOpen(ofname2,'w')
         for i in existingIndexes:
             indexes.remove(i)
         if(len(indexes)==0):
@@ -186,12 +186,12 @@ def demultiplex(readfile,
             ofile.close()
         for ofile in ofile2.values():
             ofile.close()
-        for i in indexes:
-            ofname1 = os.path.join(rpath,''.join(i) + "_" + rname)
-            ofname2 = os.path.join(rpath2,''.join(i) + "_" + rname2)
-            os.rename(os.path.join(rpath,'tmp.' + ofname1),
-                      os.path.join(rpath,ofname1))
-            os.rename(os.path.join(rpath2,'tmp.'+ofname2),
-                      os.path.join(rpath2,ofname2))
+        ## for i in indexes:
+        ##     ofname1 = os.path.join(rpath,''.join(i) + "_" + rname)
+        ##     ofname2 = os.path.join(rpath2,''.join(i) + "_" + rname2)
+        ##     os.rename(os.path.join(rpath,'tmp.' + ofname1),
+        ##               os.path.join(rpath,ofname1))
+        ##     os.rename(os.path.join(rpath2,'tmp.'+ofname2),
+        ##               os.path.join(rpath2,ofname2))
 
 
