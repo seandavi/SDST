@@ -13,6 +13,8 @@ def meltVcf(opts):
         outfile = open(opts.outfile,'w')
     else:
         outfile = sys.stdout
+    if(opts.includeHeader):
+        writer = vcf.Writer(outfile,v)
     seqtools.vcf.vcfMelt(v,outfile)
     outfile.close()
 
@@ -24,4 +26,7 @@ meltVcf_parser.add_argument('-f','--vcf',
                             help='Filename of VCF file [default=stdin]')
 meltVcf_parser.add_argument('-o','--outfile',
                             help='Filename of VCF file [default=stdout]')
+meltVcf_parser.add_argument('-i','--includeHeader',action='store_true',
+                            help='Include VCF header in the output; useful for including definitions of columns')
+
 meltVcf_parser.set_defaults(func=meltVcf)
