@@ -50,5 +50,11 @@ def vcfMelt(reader,outfile):
 
         for x in formats:
             for sample in record.samples:
-                row.append(flatten(getattr(sample.data, x, None)))
-        outfile.write('\t'.join((str(r) for r in row)) + "\n")
+                row.append(flatten(getattr(sample.data, x, '')))
+        newrow = []
+        for r in row:
+            if(r is None):
+                newrow.append('')
+            else:
+                newrow.append(str(r))
+        outfile.write('\t'.join(newrow) + "\n")
