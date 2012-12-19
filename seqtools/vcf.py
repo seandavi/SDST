@@ -7,8 +7,6 @@ def vcfMelt(reader,outfile):
     :param reader: a vcf.Reader object (from the pyvcf package)
     :param outfile: a stream to which to write the resulting melted VCF file
     """
-    print reader
-    print outfile
     formats = reader.formats.keys()
     infos = reader.infos.keys()
     if('EFF' in reader.infos):
