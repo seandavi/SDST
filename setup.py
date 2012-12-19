@@ -19,7 +19,7 @@ setup(name='seqtools',
       include_package_data=True,
       zip_safe=False,
       install_requires=[
-          # -*- Extra requirements: -*-
+          'PyVCF>=0.6.2'
       ],
       entry_points="""
       # -*- Entry points: -*-
