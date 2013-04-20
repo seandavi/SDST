@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import sys, os, glob
 
-version = '0.1.0'
+version = '0.2.0'
 
 setup(name='seqtools',
       version=version,
@@ -19,7 +19,8 @@ setup(name='seqtools',
       include_package_data=True,
       zip_safe=False,
       install_requires=[
-          'PyVCF>=0.6.2'
+          'PyVCF>=0.6.2',
+          'python-Levenshtein'
       ],
       entry_points="""
       # -*- Entry points: -*-

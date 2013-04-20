@@ -4,9 +4,15 @@ from itertools import izip
 import subprocess
 import os
 import collections
+import logging
+
+import Levenshtein 
+
 from seqtools.utils import revcomp,fileOpen
 from seqtools.fastq import Fastq
 
+
+logging.basicConfig(level=logging.DEBUG)
 
 def isIndexRevComp(indexfile,indexes,n=500000):
     """Determine if the indexes are reverse complemented or not
@@ -15,18 +21,28 @@ def isIndexRevComp(indexfile,indexes,n=500000):
     :param indexes: list or tuple of index strings
     :param n: integer number of reads to sample
     """
+    print("HERE")
     ifile = Fastq(indexfile)
+    ilength=len(indexes[0])
+    print(ilength)
     indexreads = collections.defaultdict(int)
     for i in xrange(n):
-        indexreads[ifile.next().sequence]+=1
+        indexreads[ifile.next().sequence[:ilength]]+=1
     counts = {'normal':0,
               'revcomp':0}
     for k,v in indexreads.items():
+        print k,v
         for i in indexes:
-            if(k.startswith(i)):
+            if(Levenshtein.distance(k,i)<=1):
                 counts['normal']+=v
-            if(k.startswith(revcomp(i))):
+                continue
+            if(Levenshtein.distance(k,revcomp(i))<=1):
                 counts['revcomp']+=v
+    if(counts['revcomp']>counts['normal']):
+        print('using revcomp')
+    else:
+        print('NOT revcomp')
+        
     return(counts['revcomp']>counts['normal'])
     
 
@@ -85,6 +101,7 @@ def demultiplex(readfile,
             
     # two readfiles, single indexfile
     if(readfile2 is not None) and (indexfile2 is None):
+        print("here1")
         rfile1 = Fastq(readfile)
         rfile2 = Fastq(readfile2)
         (rpath,rname) = os.path.split(readfile)
