@@ -1,7 +1,7 @@
 import vcf
 from seqtools.snpeff import effNames,snpEffEffects
 
-def vcfMelt(reader,outfile):
+def vcfMelt(reader,outfile,samplename=None):
     """Melt a VCF file into a tab-delimited text file
 
     :param reader: a vcf.Reader object (from the pyvcf package)
@@ -16,7 +16,10 @@ def vcfMelt(reader,outfile):
     # TODO: split out formats per sample
     # TODO: split out filters per column
     # TODO: split up info fields and format array fields into separate columns
-    header = ['FILTER', 'CHROM', 'POS', 'REF', 'ALT', 'ID'] + ['info.' + x for x in infos]
+    header = []
+    if(samplename is not None):
+        header += ['SampleName']
+    header += ['FILTER', 'CHROM', 'POS', 'REF', 'ALT', 'ID'] + ['info.' + x for x in infos]
     if(snpeff):
         header += effNames
     formatList = []
@@ -38,11 +41,21 @@ def vcfMelt(reader,outfile):
     for record in reader:
         info_row = [flatten(record.INFO.get(x, None)) for x in infos]
         if(snpeff):
-            maxeffect = snpEffEffects(record.INFO['EFF']).highest
-            info_row += maxeffect.values()
-        fixed = [record.CHROM, record.POS, record.REF, record.ALT, record.ID]
+            try:
+                maxeffect = snpEffEffects(record.INFO['EFF']).highest
+                info_row += maxeffect.values()
+            except KeyError:
+                # return a bunch of NAs
+                info_row += ['NA']*len(effNames)
+        fixed = [record.CHROM, record.POS, record.REF, ','.join([str(alt) for alt in record.ALT]), record.ID] 
+
         row = []
-        row += [record.FILTER or '.']
+        if(samplename is not None):
+            row += [samplename]
+        if(record.FILTER):
+            row += [",".join(record.FILTER)]
+        else:
+            row += ['.']
         row += fixed
         row += info_row
 

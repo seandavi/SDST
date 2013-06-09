@@ -15,7 +15,7 @@ def meltVcf(opts):
         outfile = sys.stdout
     if(opts.includeHeader):
         writer = vcf.Writer(outfile,v)
-    seqtools.vcf.vcfMelt(v,outfile)
+    seqtools.vcf.vcfMelt(v,outfile,opts.samplename)
     outfile.close()
 
 varscan_parser = subparsers.add_parser('vcf')
@@ -26,6 +26,8 @@ meltVcf_parser.add_argument('-f','--vcf',
                             help='Filename of VCF file [default=stdin]')
 meltVcf_parser.add_argument('-o','--outfile',
                             help='Filename of VCF file [default=stdout]')
+meltVcf_parser.add_argument('-s','--samplename',default=None,
+                            help='Sample name to include in first column of output [default=None]')
 meltVcf_parser.add_argument('-i','--includeHeader',action='store_true',
                             help='Include VCF header in the output; useful for including definitions of columns')
 
