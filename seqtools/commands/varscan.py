@@ -10,7 +10,7 @@ def fixVcf(opts):
     else:
         varscan = fixVarscanVcfFile(opts.varscan)
     for line in varscan:
-        print line
+        print(line)
 
 varscan_parser = subparsers.add_parser('varscan')
 varscan_subparsers = varscan_parser.add_subparsers(help="VarScan subcommands")

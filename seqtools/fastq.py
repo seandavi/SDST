@@ -36,7 +36,7 @@ class Fastq(object):
     def __iter__(self):
         return self
 
-    def next(self):
+    def __next__(self):
         tmp = self._getNextRecord()
         if(tmp is None):
             raise StopIteration

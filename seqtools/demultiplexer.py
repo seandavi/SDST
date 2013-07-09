@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import argparse
-from itertools import izip
+
 import subprocess
 import os
 import collections
@@ -26,12 +26,12 @@ def isIndexRevComp(indexfile,indexes,n=500000):
     ilength=len(indexes[0])
     print(ilength)
     indexreads = collections.defaultdict(int)
-    for i in xrange(n):
+    for i in range(n):
         indexreads[ifile.next().sequence[:ilength]]+=1
     counts = {'normal':0,
               'revcomp':0}
-    for k,v in indexreads.items():
-        print k,v
+    for k,v in list(indexreads.items()):
+        print(k,v)
         for i in indexes:
             if(Levenshtein.distance(k,i)<=1):
                 counts['normal']+=v
@@ -75,13 +75,13 @@ def demultiplex(readfile,
             if(not os.path.exists(ofname1)):
                 ofile1[i]=fileOpen(os.path.join(rpath,i + "_" + rname),'w')
             else:
-                print ofname1," already exists, skipping"
+                print(ofname1," already exists, skipping")
                 existingIndexes.append(i)
         for i in existingIndexes:
             indexes.remove(i)
         if(len(indexes)==0):
             exit(0)
-        for (r1,i) in izip(rfile1,ifile):
+        for (r1,i) in zip(rfile1,ifile):
             try:
                 if indexRevComp:
                     i2 = revcomp(i.sequence[:indexlen])
@@ -93,7 +93,7 @@ def demultiplex(readfile,
                 pass
         rfile1.close()
         ifile.close()
-        for ofile in ofile1.values():
+        for ofile in list(ofile1.values()):
             ofile.close()
         ## for i in indexes:
         ##     os.rename(os.path.join(rpath,'tmp.' + i + "_" + rname),
@@ -115,7 +115,7 @@ def demultiplex(readfile,
             ofname1 = os.path.join(rpath,i + "_" + rname)
             ofname2 = os.path.join(rpath2,i + "_" + rname2)
             if(os.path.exists(ofname1) and os.path.exists(ofname2)):
-                print ofname1,ofname2, " already exist, skipping"
+                print(ofname1,ofname2, " already exist, skipping")
                 existingIndexes.append(i)
             else:
                 ofile1[i]=fileOpen(os.path.join(rpath,i + "_" + rname),'w')
@@ -125,7 +125,7 @@ def demultiplex(readfile,
         if(len(indexes)==0):
             exit(0)
         indexlen = len(indexes[0])
-        for (r1,r2,i) in izip(rfile1,rfile2,ifile):
+        for (r1,r2,i) in zip(rfile1,rfile2,ifile):
             try:
                 if indexRevComp:
                     i2 = revcomp(i.sequence[:indexlen])
@@ -140,9 +140,9 @@ def demultiplex(readfile,
         rfile1.close()
         rfile2.close()
         ifile.close()
-        for ofile in ofile1.values():
+        for ofile in list(ofile1.values()):
             ofile.close()
-        for ofile in ofile2.values():
+        for ofile in list(ofile2.values()):
             ofile.close()
         ## for i in indexes:
         ##     print os.path.join(rpath,'tmp.' + i + "_" + rname),os.path.join(rpath,i + "_"+rname)
@@ -169,7 +169,7 @@ def demultiplex(readfile,
             ofname1 = os.path.join(rpath,i + "_" + rname)
             ofname2 = os.path.join(rpath2,i + "_" + rname2)
             if(os.path.exists(ofname1) and os.path.exists(ofname2)):
-                print ofname1,ofname2, " already exist, skipping"
+                print(ofname1,ofname2, " already exist, skipping")
                 existingIndexes.append(i)
             else:
                 ofile1[i]=fileOpen(ofname1,'w')
@@ -179,7 +179,7 @@ def demultiplex(readfile,
         if(len(indexes)==0):
             exit(0)
         indexlen = len(indexes[0][0])
-        for (r1,r2,i,i2) in izip(rfile1,rfile2,ifile,ifile2):
+        for (r1,r2,i,i2) in zip(rfile1,rfile2,ifile,ifile2):
             try:
                 if indexRevComp:
                     ir = revcomp(i.sequence[:indexlen])
@@ -199,9 +199,9 @@ def demultiplex(readfile,
         rfile2.close()
         ifile.close()
         ifile2.close()
-        for ofile in ofile1.values():
+        for ofile in list(ofile1.values()):
             ofile.close()
-        for ofile in ofile2.values():
+        for ofile in list(ofile2.values()):
             ofile.close()
         ## for i in indexes:
         ##     ofname1 = os.path.join(rpath,''.join(i) + "_" + rname)

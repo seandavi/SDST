@@ -1,4 +1,3 @@
-import vcf
 from seqtools.snpeff import effNames,snpEffEffects
 
 def vcfMelt(reader,outfile,samplename=None):
@@ -7,8 +6,8 @@ def vcfMelt(reader,outfile,samplename=None):
     :param reader: a vcf.Reader object (from the pyvcf package)
     :param outfile: a stream to which to write the resulting melted VCF file
     """
-    formats = reader.formats.keys()
-    infos = reader.infos.keys()
+    formats = list(reader.formats.keys())
+    infos = list(reader.infos.keys())
     if('EFF' in reader.infos):
         snpeff = True
         del infos[infos.index('EFF')]
@@ -43,7 +42,7 @@ def vcfMelt(reader,outfile,samplename=None):
         if(snpeff):
             try:
                 maxeffect = snpEffEffects(record.INFO['EFF']).highest
-                info_row += maxeffect.values()
+                info_row += list(maxeffect.values())
             except KeyError:
                 # return a bunch of NAs
                 info_row += ['NA']*len(effNames)

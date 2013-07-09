@@ -95,7 +95,7 @@ def main():
     else:
         varscan = fixVarscanVcfFile(open(opts.varscan))
     for line in varscan:
-        print line
+        print(line)
 
 if __name__ == '__main__':
     main()

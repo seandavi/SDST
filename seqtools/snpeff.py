@@ -18,7 +18,7 @@ effNames = ['Effect',
 
 class snpEffRecord(collections.OrderedDict):
     def __init__(self,*effs):
-        super(snpEffRecord,self).__init__(zip(effNames,effs))
+        super(snpEffRecord,self).__init__(list(zip(effNames,effs)))
 
 
 
@@ -31,6 +31,8 @@ class snpEffEffects(object):
         tmp = eff.split(',')
         self.effs = []
         for effgroup in tmp:
+            if(effgroup.startswith('CUSTOM')):
+                continue
             (maineff,mods) = effRe.match(effgroup).groups()
             efflist = [maineff] + mods.split('|')
             if(len(efflist)==11):

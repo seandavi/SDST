@@ -1,8 +1,7 @@
-from string import maketrans
 import subprocess
 import tempfile
 
-transtab = maketrans('ACGTNacgtn','TGCANtgcan')
+transtab = str.maketrans('ACGTNacgtn','TGCANtgcan')
 
 revcompdict = {}
 def revcomp(sequence):
@@ -54,9 +53,9 @@ def sortVcfBySequence(vcf,seqnames,seqmap=None):
     >>> v.close()"""
 
     if(seqmap):
-        revseqmap = dict([(v,k) for (k,v) in seqmap.items()])
+        revseqmap = dict([(v,k) for (k,v) in list(seqmap.items())])
 
-    print seqmap
+    print(seqmap)
     
     for s in seqnames:
         # seqmap maps seqnames to tabix index names
@@ -65,12 +64,12 @@ def sortVcfBySequence(vcf,seqnames,seqmap=None):
         else:
             try:
                 region = vcf.fetch(s,start=0)
-                print region
+                print(region)
             except ValueError:
-                print "here",s
+                print("here",s)
                 continue
-        print region
-        print s
+        print(region)
+        print(s)
         for rec in region:
             if(seqmap is not None):
                 rec.CHROM=revseqmap[rec.CHROM]

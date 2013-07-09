@@ -26,6 +26,6 @@ for line in f:
         continue
     header = sline[0]
     seq = sline[-1]
-    print ">%s\n%s" % (header,seq)
+    print(">%s\n%s" % (header,seq))
 
 f.close()
