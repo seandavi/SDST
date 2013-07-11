@@ -1,4 +1,5 @@
 from seqtools.snpeff import effNames,snpEffEffects
+import itertools
 
 def vcfMelt(reader,outfile,samplename=None):
     """Melt a VCF file into a tab-delimited text file
@@ -11,34 +12,55 @@ def vcfMelt(reader,outfile,samplename=None):
     if('EFF' in reader.infos):
         snpeff = True
         del infos[infos.index('EFF')]
-
     # TODO: split out formats per sample
     # TODO: split out filters per column
     # TODO: split up info fields and format array fields into separate columns
     header = []
     if(samplename is not None):
         header += ['SampleName']
-    header += ['FILTER', 'CHROM', 'POS', 'REF', 'ALT', 'ID'] + ['info.' + x for x in infos]
+    header += ['FILTER', 'CHROM', 'POS', 'REF', 'ALT', 'ID'] 
+    for x in infos:
+        infonum=reader.infos.get(x)[1]
+        if(infonum is None): infonum=0
+        if(infonum>1):
+            for y in range(infonum):
+                header.append(x + "." + str(y))
+        else:
+            header.append(x)
     if(snpeff):
         header += effNames
     formatList = []
     for format in formats:
         for sample in reader.samples:
-            formatList.append(sample + "." + format)
+            infonum=reader.formats.get(format)[1]
+            if(infonum is None): infonum=0
+            if(infonum>1):
+                for y in range(infonum):
+                    formatList.append(sample + "." + format + "." + str(y))
+            else:
+                formatList.append(sample + "." + format)
     header += formatList 
 
     outfile.write('\t'.join(header) + "\n")
-        
 
 
     def flatten(x):
         if type(x) == type([]):
             # can probably change to tab-separated if headers match up right!
-            x = ','.join(map(str, x))
-        return x
+            return(list(map(str, x)))
+        else:
+            return([str(x)])
 
     for record in reader:
-        info_row = [flatten(record.INFO.get(x, None)) for x in infos]
+        info_row=[]
+        for x in infos:
+            infonum = reader.infos.get(x)[1]
+            if(infonum is None):
+                infonum = 0
+            val = record.INFO.get(x,None)
+            if((type(val)!=type([])) and (infonum>1)):
+                val = list(itertools.repeat('',infonum))
+            info_row += flatten(val) 
         if(snpeff):
             try:
                 maxeffect = snpEffEffects(record.INFO['EFF']).highest
@@ -60,8 +82,8 @@ def vcfMelt(reader,outfile,samplename=None):
 
         for x in formats:
             for sample in record.samples:
-                row.append(flatten(getattr(sample.data, x, '')))
-        newrow = []
+                row+=flatten(getattr(sample.data, x, ''))
+        newrow=[]
         for r in row:
             if(r is None):
                 newrow.append('')
