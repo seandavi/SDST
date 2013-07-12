@@ -26,6 +26,7 @@ def modifyStrelkaRow(record):
     if(record.is_snp or record.ALT[0] is None):
         ref = record.REF
         alt = record.ALT[0]
+        print(record)
         record.INFO['NORMREF']=getattr(record.samples[0].data,ref+'U')[0]
         record.INFO['TUMREF']=getattr(record.samples[1].data,ref+'U')[0]
         # strelka sometimes reports a non-passing variant as no "ALT" allele (no change)
@@ -36,8 +37,8 @@ def modifyStrelkaRow(record):
             record.INFO['TUMVARFRACTION']=0
         else:
             alt = str(alt)
-            record.INFO['NORMALT']=getattr(record.samples[0].data,alt+'U')[1]
-            record.INFO['TUMALT']=getattr(record.samples[1].data,alt+'U')[1]
+            record.INFO['NORMALT']=getattr(record.samples[0].data,alt+'U')[0]
+            record.INFO['TUMALT']=getattr(record.samples[1].data,alt+'U')[0]
             try:
                 record.INFO['TUMVAF']=float(record.INFO['TUMALT'])/(record.INFO['TUMALT']+record.INFO['TUMREF'])
             except ZeroDivisionError:
@@ -48,10 +49,10 @@ def modifyStrelkaRow(record):
                 record.INFO['TUMVARFRACTION']=0
         return(record)
     else:
-        record.INFO['NORMREF']=getattr(record.samples[0].data,'TAR')[1]
-        record.INFO['NORMALT']=getattr(record.samples[0].data,'TIR')[1]
-        record.INFO['TUMREF']=getattr(record.samples[1].data,'TAR')[1]
-        record.INFO['TUMALT']=getattr(record.samples[1].data,'TIR')[1]
+        record.INFO['NORMREF']=getattr(record.samples[0].data,'TAR')[0]
+        record.INFO['NORMALT']=getattr(record.samples[0].data,'TIR')[0]
+        record.INFO['TUMREF']=getattr(record.samples[1].data,'TAR')[0]
+        record.INFO['TUMALT']=getattr(record.samples[1].data,'TIR')[0]
         try:
             record.INFO['TUMVAF']=float(record.INFO['TUMALT'])/(record.INFO['TUMALT']+record.INFO['TUMREF'])
         except ZeroDivisionError:
