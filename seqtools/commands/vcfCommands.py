@@ -44,6 +44,8 @@ meltVcf_parser.add_argument('-s','--samplename',default=None,
                             help='Sample name to include in first column of output [default=None]')
 meltVcf_parser.add_argument('-i','--includeHeader',action='store_true',
                             help='Include VCF header in the output; useful for including definitions of columns')
+meltVcf_parser.set_defaults(func=meltVcf)
+
 
 strelka_parser = varscan_subparsers.add_parser('strelka',
                                               help="process a vcf strelka-produced vcf file to add tumor/normal read count info fields (TUMREF,NORMREF,TUMALT,NORMALT,TUMVAF)")
