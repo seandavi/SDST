@@ -28,9 +28,8 @@ class snpEffEffects(object):
     """Operate on a snpEff VCF string
     """
     def __init__(self,eff):
-        tmp = eff.split(',')
         self.effs = []
-        for effgroup in tmp:
+        for effgroup in eff:
             if(effgroup.startswith('CUSTOM')):
                 continue
             (maineff,mods) = effRe.match(effgroup).groups()
