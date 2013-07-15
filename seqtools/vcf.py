@@ -60,6 +60,8 @@ def vcfMelt(reader,outfile,samplename=None):
             val = record.INFO.get(x,None)
             if((type(val)!=type([])) and (infonum>1)):
                 val = list(itertools.repeat('',infonum))
+            if((infonum<=1) and (type(val)==type([]))):
+                val = ','.join(str(v) for v in val)
             info_row += flatten(val) 
         if(snpeff):
             try:
