@@ -4,6 +4,7 @@ from seqtools.main import subparsers
 import seqtools.vcf
 import seqtools.strelka
 import vcf
+import pysam
 
 def meltVcf(opts):
     if(opts.vcf):
@@ -31,6 +32,19 @@ def strelkaProcess(opts):
     seqtools.strelka.processVcf(v,outfile)
     outfile.close()
 
+def RNAcounts(opts):
+    if(opts.vcf):
+        v = vcf.Reader(filename=opts.vcf)
+    else:
+        v = vcf.Reader(sys.stdin)
+    if(opts.outfile):
+        outfile = open(opts.outfile,'w')
+    else:
+        outfile = sys.stdout
+    bamfile = pysam.Samfile(opts.bamfile)
+    seqtools.vcf.countBases(v,outfile,bamfile)
+    outfile.close()
+
 
 varscan_parser = subparsers.add_parser('vcf')
 varscan_subparsers = varscan_parser.add_subparsers(help="vcf subcommands")
@@ -55,3 +69,25 @@ strelka_parser.add_argument('-o','--outfile',
                             help='Filename of VCF file [default=stdout]')
 
 strelka_parser.set_defaults(func=strelkaProcess)
+
+rnacount_parser = varscan_subparsers.add_parser('rnacount',
+                                                help="Count the number of REF and ALT alleles in a bamfile at each variant location in a VCF file.  The results are added to the VCF file in three new INFO tags, RNAC_REF, RNAC_ALT, and RNAC_MAF")
+
+rnacount_parser.add_argument('-f','--vcf',
+                            help='Filename of VCF file [default=stdin]')
+rnacount_parser.add_argument('-o','--outfile',
+                            help='Filename of VCF file [default=stdout]')
+rnacount_parser.add_argument('bamfile',
+                             help='The name of the RNA-seq bamfile from which to collect counts')
+
+rnacount_parser.set_defaults(func=RNAcounts)
+
+
+
+
+
+
+
+
+
+

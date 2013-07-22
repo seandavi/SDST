@@ -1,5 +1,6 @@
 from seqtools.snpeff import effNames,snpEffEffects
 import itertools
+import vcf
 
 def vcfMelt(reader,outfile,samplename=None):
     """Melt a VCF file into a tab-delimited text file
@@ -92,3 +93,56 @@ def vcfMelt(reader,outfile,samplename=None):
             else:
                 newrow.append(str(r))
         outfile.write('\t'.join(newrow) + "\n")
+
+
+def basesAtPos(samfile, pos, chromname, minbasequal, minmapqual):
+    'Return a string of the bases at that position.'
+    position = 0
+    coverage = 0
+    bases = ""
+    for pileupcolumn in samfile.pileup(reference=chromname, start=pos-1, end=pos):
+        if ((pileupcolumn.pos+1)==pos):
+            position = int(pileupcolumn.pos+1)
+            coverage = int(pileupcolumn.n)
+            for pileupread in pileupcolumn.pileups:
+                if(pos==73433494):
+                    print(pos,bases)
+                if (pileupread.indel == 0 and pileupread.is_del == 0 and \
+                (pileupread.alignment.qual[pileupread.qpos]) >= minbasequal and \
+                float(pileupread.alignment.mapq) >= minmapqual):
+                    bases += chr(pileupread.alignment.seq[pileupread.qpos])
+    return position, coverage, bases
+
+
+def countBases(reader,outfile,bamfile):
+    """Count the ref and alt bases in a bam file at each variant location
+
+    :params reader: a VCF Reader object
+    :params outfile: a stream to which to write the output
+    :params bamfile: a pysam Samfile, sorted and indexed
+
+    Adds the INFO fields:
+
+    RNAC_REF, RNAC_ALT, RNAC_MAF"""
+
+    reader.infos['RNAC_REF'] = vcf.parser._Info(id='RNAC_REF',num=1,type='Integer',desc='The count of REF alleles in the bamfile')    
+    reader.infos['RNAC_ALT'] = vcf.parser._Info(id='RNAC_ALT',num=1,type='Integer',desc='The count of ALT alleles in the bamfile')    
+    reader.infos['RNAC_MAF'] = vcf.parser._Info(id='RNAC_MAF',num=1,type='Float',desc='The fraction of ALT allele in the bamfile')
+
+    writer = vcf.Writer(outfile,reader)
+
+    for row in reader:
+        ref = row.REF
+        alt = str(row.ALT[0])
+        bases = basesAtPos(bamfile,row.POS,row.CHROM,0,0)[2]
+        refcount,altcount = [len([x for x in bases if x==ref]),
+                             len([x for x in bases if x==alt])]
+        row.INFO['RNAC_REF']=refcount
+        row.INFO['RNAC_ALT']=altcount
+        row.INFO['RNAC_MAF']=0
+        if(refcount+altcount>0):
+            row.INFO['RNAC_MAF']=float(altcount)/(refcount+altcount)
+
+        writer.write_record(row)
+
+
