@@ -1,5 +1,6 @@
 import subprocess
 import tempfile
+import gzip
 
 transtab = str.maketrans('ACGTNacgtn','TGCANtgcan')
 
@@ -18,7 +19,7 @@ def revcomp(sequence):
     return(tmp)
 
 
-def fileOpen(fname,mode='r'):
+def fileOpen(fname,mode='rt',encoding='latin-1'):
     """Open a file, including gzip files
 
     :param fname: The filename to open.  Gzip files are distinguished by ending in '.gz'
@@ -30,12 +31,9 @@ def fileOpen(fname,mode='r'):
     """
     # gzip in python is REALLY slow, so use pipes instead.
     if(fname.endswith('.gz')):
-        if(mode.startswith('r')):
-            return subprocess.Popen(['gunzip -c %s' % fname],stdout=subprocess.PIPE,shell=True).stdout
-        if(mode.startswith('w')):
-            return subprocess.Popen(['gzip > %s' % fname],stdin=subprocess.PIPE,shell=True).stdin
+        return gzip.open(fname,mode=mode,encoding=encoding)
     else:
-        return open(fname,'r')
+        return open(fname,mode)
 
 
 def sortVcfBySequence(vcf,seqnames,seqmap=None):
