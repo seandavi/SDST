@@ -16,7 +16,7 @@ class FastqRecord(object):
 
     def __str__(self):
         """String represendation, suitable for output to a fastq file"""
-        return "%s\n%s\n%s\n%s\n" % (self.header,self.sequence,self.line3,self.quality)
+        return "{}\n{}\n{}\n{}".format(self.header,self.sequence,self.line3,self.quality)
     
 
 class Fastq(object):
@@ -27,7 +27,7 @@ class Fastq(object):
     def _getNextRecord(self):
         x = []
         for i in range(0,4):
-            nextLine=self.fh.next().strip()
+            nextLine=self.fh.readline().strip()
             x.append(nextLine)
             if(nextLine==''):
                 return None
