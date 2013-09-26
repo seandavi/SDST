@@ -26,7 +26,6 @@ def modifyStrelkaRow(record):
     if(record.is_snp or record.ALT[0] is None):
         ref = record.REF
         alt = record.ALT[0]
-        print(record)
         record.INFO['NORMREF']=getattr(record.samples[0].data,ref+'U')[0]
         record.INFO['TUMREF']=getattr(record.samples[1].data,ref+'U')[0]
         # strelka sometimes reports a non-passing variant as no "ALT" allele (no change)
