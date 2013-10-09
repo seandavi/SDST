@@ -40,6 +40,7 @@ class snpEffEffects(object):
 
     @property
     def highest(self,impactOrder=impactOrder):
+        """Return the highest impact effect, or None is there is no gene effect"""
         for impact in impactOrder:
             for eff in self.effs:
                 if(eff['Impact'] == impact):
