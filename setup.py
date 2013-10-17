@@ -20,7 +20,7 @@ setup(name='seqtools',
       zip_safe=False,
       install_requires=[
           'PyVCF>=0.6.3',
-          'python-Levenshtein'
+          #'python-Levenshtein'
       ],
       entry_points="""
       # -*- Entry points: -*-
