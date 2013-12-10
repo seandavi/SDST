@@ -6,7 +6,7 @@ import os
 import collections
 import logging
 
-import Levenshtein 
+import pylev
 
 from seqtools.utils import revcomp,fileOpen
 from seqtools.fastq import Fastq
@@ -33,10 +33,10 @@ def isIndexRevComp(indexfile,indexes,n=500000):
     for k,v in list(indexreads.items()):
         print(k,v)
         for i in indexes:
-            if(Levenshtein.distance(k,i)<=1):
+            if(pylev.levenshtein(k,i)<=1):
                 counts['normal']+=v
                 continue
-            if(Levenshtein.distance(k,revcomp(i))<=1):
+            if(pylev.levenshtein(k,revcomp(i))<=1):
                 counts['revcomp']+=v
     if(counts['revcomp']>counts['normal']):
         print('using revcomp')
