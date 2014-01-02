@@ -2,11 +2,13 @@ from seqtools.snpeff import effNames,snpEffEffects
 import itertools
 import vcf
 
-def vcfMelt(reader,outfile,samplename=None):
+def vcfMelt(reader,outfile,samplename=None,includeGenotypes=False):
     """Melt a VCF file into a tab-delimited text file
 
     :param reader: a vcf.Reader object (from the pyvcf package)
     :param outfile: a stream to which to write the resulting melted VCF file
+    :param samplename: include a samplename as the first column for the case for the case of multiple text files being concatenated in "long" format -- default "None" for not including
+    :param includeGenotypes: Include genotypes in output (one per sample in the XXX.GT columns) -- default False
     """
     formats = list(reader.formats.keys())
     infos = list(reader.infos.keys())
@@ -31,6 +33,9 @@ def vcfMelt(reader,outfile,samplename=None):
     if(snpeff):
         header += effNames
     formatList = []
+    if(includeGenotypes):
+        for sample in reader.samples:
+            formatList.append(sample + ".GT")
     for format in formats:
         for sample in reader.samples:
             infonum=reader.formats.get(format)[1]
@@ -87,6 +92,13 @@ def vcfMelt(reader,outfile,samplename=None):
         row += fixed
         row += info_row
 
+        if(includeGenotypes):
+            for sample in reader.samples:
+                calldata=record.genotype(sample)
+                if(calldata.called):
+                    row.append(str(record.genotype(sample).data.GT))
+                else:
+                    row.append('./.')
         for x in formats:
             for sample in record.samples:
                 row+=flatten(getattr(sample.data, x, ''))
