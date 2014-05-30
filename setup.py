@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import sys, os, glob
 
-version = '0.4.8'
+version = '0.5.0'
 
 setup(name='seqtools',
       version=version,
