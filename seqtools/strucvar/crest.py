@@ -3,8 +3,7 @@ def crestLineToBedLines(crestline,extrastring=None):
 
     :param crestline: a single string representing the CREST output
     :param extrastring: a single string to concatenate to the bed output, useful for including sample information, etc.
-    
-    Returns a string containing the two bed lines"""
+    :returns: a string containing the two bed lines"""
     sline = crestline.strip().split("\t")
     outstringparts=[sline[8],sline[0],sline[1],sline[4],sline[5]]
     if(extrastring is not None):

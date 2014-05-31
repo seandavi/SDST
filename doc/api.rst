@@ -14,6 +14,13 @@ seqtools.fastq
 .. automodule:: seqtools.fastq
    :members:
 
+.. autoclass:: seqtools.fastq.FastqRecord
+   :members:
+
+.. autoclass:: seqtools.fastq.Fastq
+   :members:
+   :undoc-members:
+
 seqtools.varscan
 ================
 
@@ -34,6 +41,9 @@ seqtools.demultiplexer
 
 seqtools.strucvar
 =================
+
+.. automodule:: seqtools.strucvar
+   :members:
 
 .. automodule:: seqtools.strucvar.crest
    :members:
