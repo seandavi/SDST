@@ -6,7 +6,7 @@
 Welcome to seqTools's documentation!
 ====================================
 
-The main repository for seqTools is located on bitbucket at https://bitbucket.org/meltzerlab/seqtools.
+The main repository for seqTools is located on bitbucket at https://github.com/seandavi/seqtools.
 
 .. toctree::
    :maxdepth: 2

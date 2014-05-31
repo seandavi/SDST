@@ -31,3 +31,9 @@ seqtools.demultiplexer
 
 .. automodule:: seqtools.demultiplexer
    :members:
+
+seqtools.strucvar
+=================
+
+.. automodule:: seqtools.strucvar.crest
+   :members:
