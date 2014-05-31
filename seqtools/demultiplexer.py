@@ -3,15 +3,10 @@ import argparse
 import subprocess
 import os
 import collections
-import logging
-
 import pylev
 
 from seqtools.utils import revcomp,fileOpen
 from seqtools.fastq import Fastq
-
-
-logging.basicConfig(level=logging.DEBUG)
 
 def isIndexRevComp(indexfile,indexes,n=500000):
     """Determine if the indexes are reverse complemented or not
