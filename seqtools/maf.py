@@ -333,7 +333,7 @@ def vcf2maf(vcfrec,center='Center',NCBI_Build='hg19'):
       mafrec['Reference_Allele']=vcf.REF
       mafrec['Tumor_Seq_Allele_1']='-'
       mafrec['Tumor_Seq_Allele_2']='-'
-    else if(vcfrec.is_insertion):
+    elif(vcfrec.is_insertion):
       mafrec['Variant_Type']='INS'
       mafrec['Tumor_Seq_Allele_1']=vcf.ALT
       mafrec['Tumor_Seq_Allele_2']=vcf.ALT
