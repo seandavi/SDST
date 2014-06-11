@@ -322,7 +322,7 @@ def vcf2maf(vcfrec,center='Center',NCBI_Build='hg19'):
   if(snpeff is not None):
     mafrec['Hugo_Symbol']=snpeff['Gene']
     mafrec['Entrez_Gene_Id']=0
-    mafrec['Center']=
+    mafrec['Center']="Center"
     mafrec['Chromosome']=vcf.CHROM
     mafrec['Start_Position']=vcf.POS
     mafrec['End_Position']=vcf.POS+1
