@@ -12,6 +12,7 @@ def vcfMelt(reader,outfile,samplename=None,includeGenotypes=False):
     """
     formats = list(reader.formats.keys())
     infos = list(reader.infos.keys())
+    snpeff = False
     if('EFF' in reader.infos):
         snpeff = True
         del infos[infos.index('EFF')]
