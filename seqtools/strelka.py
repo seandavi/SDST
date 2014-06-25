@@ -18,7 +18,7 @@ def addStrelkaHeaders(reader):
     reader.infos['TUMVAF'] = vcf.parser._Info(id='TUMVAF',num=1,type='Float',desc="The Variant Allele Frequency in the tumor")
     reader.infos['TUMVARFRACTION'] = vcf.parser._Info(id='TUMVARFRACTION',num=1,type='Float',desc="The fraction of variant reads in the tumor versus the total (so 1.0 means all variant reads in the tumor)")
     
-def modifyStrelkaRow(record):
+def modifyStrelkaRow(record,fixIndels=True):
     """Add info for strelka processing to vcf record
     
     :param record: a pyVCF record object
@@ -60,6 +60,11 @@ def modifyStrelkaRow(record):
             record.INFO['TUMVARFRACTION']=float(record.INFO['TUMALT'])/(record.INFO['TUMALT']+record.INFO['NORMALT'])
         except ZeroDivisionError:
             record.INFO['TUMVARFRACTION']=0
+        if(fixIndels):
+            record.REF=record.REF.replace('.','')
+            for i in range(len(record.ALT)):
+                if(not isinstance(record.ALT[i],vcf.model._Substitution)):
+                    return(None)
         return(record)
         
 
@@ -67,4 +72,6 @@ def processVcf(reader,outfile):
     addStrelkaHeaders(reader)
     writer = vcf.Writer(outfile,reader)
     for row in reader:
-        writer.write_record(modifyStrelkaRow(row))
+        newrow = modifyStrelkaRow(row)
+        if(newrow is not None):
+            writer.write_record(newrow)

@@ -2,7 +2,12 @@ import subprocess
 import tempfile
 import gzip
 
-transtab = str.maketrans('ACGTNacgtn','TGCANtgcan')
+try:
+    transtab = str.maketrans('ACGTNacgtn','TGCANtgcan')
+except:
+    import string
+    transtab = string.maketrans('ACGTNacgtn','TGCANtgcan')
+
 
 revcompdict = {}
 def revcomp(sequence):

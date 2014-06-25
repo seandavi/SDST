@@ -142,8 +142,8 @@ def countBases(reader,outfile,bamfile):
 
     RNAC_REF, RNAC_ALT, RNAC_MAF"""
 
-    reader.infos['RNAC_REF'] = vcf.parser._Info(id='RNAC_REF',num=1,type='Integer',desc='The count of REF alleles in the bamfile')    
-    reader.infos['RNAC_ALT'] = vcf.parser._Info(id='RNAC_ALT',num=1,type='Integer',desc='The count of ALT alleles in the bamfile')    
+    reader.infos['RNAC_REF'] = vcf.parser._Info(id='RNAC_REF',num=1,type='Integer',desc='The count of REF alleles in the bamfile')
+    reader.infos['RNAC_ALT'] = vcf.parser._Info(id='RNAC_ALT',num=1,type='Integer',desc='The count of ALT alleles in the bamfile')
     reader.infos['RNAC_MAF'] = vcf.parser._Info(id='RNAC_MAF',num=1,type='Float',desc='The fraction of ALT allele in the bamfile')
 
     writer = vcf.Writer(outfile,reader)

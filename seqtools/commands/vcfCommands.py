@@ -1,7 +1,7 @@
 import sys
 import argparse
 from seqtools.main import subparsers
-import seqtools.vcf
+import seqtools.seqvcf
 import seqtools.strelka
 import vcf
 import pysam
@@ -18,7 +18,7 @@ def meltVcf(opts):
         outfile = sys.stdout
     if(opts.includeHeader):
         writer = vcf.Writer(outfile,v)
-    seqtools.vcf.vcfMelt(v,outfile,opts.samplename,opts.includeGenotypes)
+    seqtools.seqvcf.vcfMelt(v,outfile,opts.samplename,opts.includeGenotypes)
     outfile.close()
 
 def strelkaProcess(opts):
@@ -44,7 +44,7 @@ def RNAcounts(opts):
     else:
         outfile = sys.stdout
     bamfile = pysam.Samfile(opts.bamfile)
-    seqtools.vcf.countBases(v,outfile,bamfile)
+    seqtools.seqvcf.countBases(v,outfile,bamfile)
     outfile.close()
 
 
