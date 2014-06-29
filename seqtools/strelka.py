@@ -1,4 +1,4 @@
-import vcf.parser
+import vcf
 
 def addStrelkaHeaders(reader):
     """Add strelka headers to a VCF reader
