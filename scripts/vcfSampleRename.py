@@ -16,6 +16,7 @@ if(len(reader.samples)!=len(opts.sampleName)):
 reader.samples=opts.sampleName
 writer = vcf.Writer(sys.stdout,reader)
 for record in reader:
+    # sys.stderr.write(str(record) + "\n")
     writer.write_record(record)
 
 writer.close()
