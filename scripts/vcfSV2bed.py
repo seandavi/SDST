@@ -5,7 +5,7 @@ import argparse
 
 parser = argparse.ArgumentParser(description="""Convert all structural variant lines into bed lines""")
 
-parser.add_argument('-s','--minsomaticscore',default=15)
+parser.add_argument('-s','--minsomaticscore',default=15,type=int)
 parser.add_argument("vcffile")
 
 opts = parser.parse_args()
