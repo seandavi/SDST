@@ -19,7 +19,7 @@ setup(name='seqtools',
       include_package_data=True,
       zip_safe=False,
       install_requires=[
-          'PyVCF>=0.6.3',
+          'PyVCF>=0.6.5',
           'pylev'
           #'python-Levenshtein'
       ],
