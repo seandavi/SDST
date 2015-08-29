@@ -131,20 +131,26 @@ def basesAtPos(samfile, pos, chromname, minbasequal, minmapqual):
     return position, coverage, bases
 
 
-def countBases(reader,outfile,bamfile):
+def countBases(reader,outfile,bamfile,prefix='RNAC',vaf='MAF'):
     """Count the ref and alt bases in a bam file at each variant location
 
     :params reader: a VCF Reader object
     :params outfile: a stream to which to write the output
     :params bamfile: a pysam Samfile, sorted and indexed
+    :params prefix: The prefix string in the INFO fields that will be added to the VCF file
+    :params vaf: The suffix string added for the variant allele frequency name in the VCF INFO field
 
     Adds the INFO fields:
 
-    RNAC_REF, RNAC_ALT, RNAC_MAF"""
+    {prefix}_REF, {prefix}_ALT, {prefix}_{vaf}"""
 
-    reader.infos['RNAC_REF'] = vcf.parser._Info(id='RNAC_REF',num=1,type='Integer',desc='The count of REF alleles in the bamfile')
-    reader.infos['RNAC_ALT'] = vcf.parser._Info(id='RNAC_ALT',num=1,type='Integer',desc='The count of ALT alleles in the bamfile')
-    reader.infos['RNAC_MAF'] = vcf.parser._Info(id='RNAC_MAF',num=1,type='Float',desc='The fraction of ALT allele in the bamfile')
+    REFCOUNT_NAME = prefix + "_REF"
+    ALTCOUNT_NAME = prefix + "_ALT"
+    VAF_NAME      = prefix + "_" + vaf
+
+    reader.infos[REFCOUNT_NAME] = vcf.parser._Info(id=REFCOUNT_NAME,num=1,type='Integer',desc='The count of REF alleles in the bamfile')
+    reader.infos[ALTCOUNT_NAME] = vcf.parser._Info(id=ALTCOUNT_NAME,num=1,type='Integer',desc='The count of ALT alleles in the bamfile')
+    reader.infos[VAF_NAME     ] = vcf.parser._Info(id=VAF_NAME,num=1,type='Float',desc='The fraction of ALT allele in the bamfile')
 
     writer = vcf.Writer(outfile,reader)
 
@@ -154,11 +160,11 @@ def countBases(reader,outfile,bamfile):
         bases = basesAtPos(bamfile,row.POS,row.CHROM,0,0)[2]
         refcount,altcount = [len([x for x in bases if x==ref]),
                              len([x for x in bases if x==alt])]
-        row.INFO['RNAC_REF']=refcount
-        row.INFO['RNAC_ALT']=altcount
-        row.INFO['RNAC_MAF']=0
+        row.INFO[REFCOUNT_NAME]=refcount
+        row.INFO[ALTCOUNT_NAME]=altcount
+        row.INFO[VAF_NAME]=0
         if(refcount+altcount>0):
-            row.INFO['RNAC_MAF']=float(altcount)/(refcount+altcount)
+            row.INFO[VAF_NAME]=float(altcount)/(refcount+altcount)
 
         writer.write_record(row)
 
