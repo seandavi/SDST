@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import sys, os, glob
 
-version = '0.5.2'
+version = '0.7.0'
 
 setup(name='seqtools',
       version=version,
@@ -12,7 +12,7 @@ setup(name='seqtools',
       keywords='',
       author='Sean Davis',
       author_email='seandavi@gmail.com',
-      url='https://bitbucket.org/meltzerlab/seqtools',
+      url='https://github.com/seandavi/seqtools',
       license='MIT',
       scripts=glob.glob('scripts/*'),
       packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
