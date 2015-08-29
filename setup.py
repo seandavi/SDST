@@ -5,7 +5,7 @@ version = '0.7.1'
 
 setup(name='seqtools',
       version=version,
-      description="",
+      description="Useful routines to perform NGS data analysis tasks",
       long_description="""\
 """,
       classifiers=[], # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
