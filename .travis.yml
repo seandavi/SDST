@@ -1,12 +1,18 @@
 language: python
 python:
-  - "2.6"
-  - "2.7"
-  - "3.2"
-  - "3.3"
-  - "3.4"
-  - "nightly"
-# command to install dependencies
-install: "pip install ."
-# command to run tests
+- '2.6'
+- '2.7'
+- '3.2'
+- '3.3'
+- '3.4'
+- nightly
+install: pip install .
 script: nosetests
+deploy:
+  provider: pypi
+  user: Sean.Davis
+  password:
+    secure: K9caN1HTQwiHsaAagqrraeGZuXWSaxWaOLe61zs+mHJucp09AkmVHrcI0p6DdA5fkH04cv2pd2iaVbrXMbKYJj5oUEEKtY7tGdo265OZM2+lGp1VBt/iC+Yf+i2brkVcCT4aEphiY6GawcDipDqcP8WJIvo2xSmEq6Uhh8se1Xk=
+  on:
+    tags: true
+    repo: seandavi/SDST
