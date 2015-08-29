@@ -1,4 +1,4 @@
-from seqtools.utils import fileOpen
+from SDST.utils import fileOpen
 
 class FastqRecord(object):
     """Very simple fastq class containing header, sequence, line3, and quality as strings"""

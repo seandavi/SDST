@@ -1,7 +1,7 @@
 import sys
 import argparse
-from seqtools.main import subparsers
-from seqtools.varscan import fixVarscanVcfFile
+from SDST.main import subparsers
+from SDST.varscan import fixVarscanVcfFile
 
 
 def fixVcf(opts):

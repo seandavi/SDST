@@ -1,14 +1,14 @@
-from seqtools.main import subparsers
-import seqtools.strucvar
-import seqtools.strucvar.crest
+from SDST.main import subparsers
+import SDST.strucvar
+import SDST.strucvar.crest
 
 def crestToBed(opts):
     with open(opts.predSVfile,'r') as f:
         for line in f:
             if(opts.samplename is not None):
-                print(seqtools.strucvar.crest.crestLineToBedLines(line,opts.samplename))
+                print(SDST.strucvar.crest.crestLineToBedLines(line,opts.samplename))
             else:
-                print(seqtools.strucvar.crest.crestLineToBedLines(line))
+                print(SDST.strucvar.crest.crestLineToBedLines(line))
                 
 
 

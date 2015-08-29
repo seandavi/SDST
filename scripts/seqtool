@@ -1,6 +1,9 @@
 #!/usr/bin/env python
-from seqtools.main import parser
-from seqtools.commands import *
+from SDST.main import parser
+from SDST.commands import *
 
 args = parser.parse_args()
-args.func(args)
+try:
+    args.func(args)
+except:
+    parser.print_help()

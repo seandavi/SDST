@@ -5,8 +5,8 @@ import os
 import collections
 import pylev
 
-from seqtools.utils import revcomp,fileOpen
-from seqtools.fastq import Fastq
+from SDST.utils import revcomp,fileOpen
+from SDST.fastq import Fastq
 
 def isIndexRevComp(indexfile,indexes,n=500000):
     """Determine if the indexes are reverse complemented or not

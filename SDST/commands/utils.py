@@ -1,5 +1,5 @@
-from seqtools.main import subparsers
-from seqtools.demultiplexer import demultiplex
+from SDST.main import subparsers
+from SDST.demultiplexer import demultiplex
 
 def demultiplex_setup(opts):
     if(opts.readFile2):

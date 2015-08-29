@@ -46,7 +46,7 @@ def sortVcfBySequence(vcf,seqnames,seqmap=None):
 
     >>> import vcf
     >>> v = vcf.Reader('vcf.gz')
-    >>> from seqtools.utils import sortVcfBySequence
+    >>> from SDST.utils import sortVcfBySequence
     >>> w = vcf.Writer(open('sorted.vcf','w'),v)
     >>> faifile = open('ucsc.hg19.fasta.fai')
     >>> seqnames = [x.split('\t')[0] for x in faifile]

@@ -1,4 +1,4 @@
-from seqtools.snpeff import effNames,snpEffEffects
+from SDST.snpeff import effNames,snpEffEffects
 import itertools
 import vcf
 

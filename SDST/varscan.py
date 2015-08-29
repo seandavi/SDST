@@ -73,7 +73,7 @@ def fixVarscanVcfFile(iterable):
 
     Usage is like so:
 
-    >>> from seqtools.varscan import fixVarscanVcfFile
+    >>> from SDST.varscan import fixVarscanVcfFile
     >>> varscan = fixVarscanVcfFile(open('filename.vcf','r'))
     >>> for line in varscan:
         print line
