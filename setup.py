@@ -3,7 +3,7 @@ import sys, os, glob
 
 version = '0.9.1'
 
-setup(name='seqtools',
+setup(name='SDST',
       version=version,
       description="Useful routines to perform NGS data analysis tasks",
       long_description="""\
