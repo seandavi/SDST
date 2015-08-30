@@ -6,6 +6,10 @@ def read(fname):
 
 version = '0.9.7'
 
+if sys.version_info < (2.7):
+    print('SDST requires python 2.7 or higher')
+    exit(1)
+
 setup(name='SDST',
       version=version,
       description="Useful routines to perform NGS data analysis tasks",
@@ -24,7 +28,6 @@ setup(name='SDST',
           'PyVCF>=0.6.5',
           'pylev',
           'pysam',
-          'python>=2.7'
           #'python-Levenshtein'
       ],
       entry_points="""
