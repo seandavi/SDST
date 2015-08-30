@@ -3,7 +3,7 @@ import SDST.strelka
 import os
 from nose.tools import assert_almost_equal
 
-TESTFILE='strelkaRaw.vcf.gz'
+TESTFILE='strelkaRaw.vcf'
 
 def _dpath(path=''):
     """get path to a data file (relative to the directory this
