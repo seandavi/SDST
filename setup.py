@@ -6,7 +6,7 @@ def read(fname):
 
 version = '0.9.7'
 
-if sys.version_info < (2.7):
+if sys.version_info < (2,7):
     print('SDST requires python 2.7 or higher')
     exit(1)
 
