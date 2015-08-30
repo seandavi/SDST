@@ -1,4 +1,4 @@
-![Build Status](https://travis-ci.org/seandavi/seqtools.svg)
+![Build Status](https://travis-ci.org/seandavi/SDST.svg)
 
 # Overview
 
