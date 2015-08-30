@@ -25,6 +25,6 @@ def test_modifyStrelkaRow():
     assert row.INFO['TUMALT']==5
     assert row.INFO['NORMREF']==10
     assert row.INFO['NORMALT']==0
-    assert_almost_equal(row.INFO['TUMVAF'],5/7)
+    assert_almost_equal(row.INFO['TUMVAF'],5.0/7.0)
     assert row.INFO['TUMVARFRACTION']==1
 
