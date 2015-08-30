@@ -4,7 +4,7 @@ import sys, os, glob
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
-version = '0.9.6'
+version = '0.9.7'
 
 setup(name='SDST',
       version=version,
@@ -23,7 +23,8 @@ setup(name='SDST',
       install_requires=[
           'PyVCF>=0.6.5',
           'pylev',
-          'pysam'
+          'pysam',
+          'python>=2.7'
           #'python-Levenshtein'
       ],
       entry_points="""
