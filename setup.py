@@ -22,7 +22,8 @@ setup(name='SDST',
       zip_safe=False,
       install_requires=[
           'PyVCF>=0.6.5',
-          'pylev'
+          'pylev',
+          'pysam'
           #'python-Levenshtein'
       ],
       entry_points="""
