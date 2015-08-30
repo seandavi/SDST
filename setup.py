@@ -4,12 +4,12 @@ import sys, os, glob
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
-version = '0.9.3'
+version = '0.9.4'
 
 setup(name='SDST',
       version=version,
       description="Useful routines to perform NGS data analysis tasks",
-      long_description=read('README.md'),
+      long_description="",
       classifiers=[], # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
       keywords='',
       author='Sean Davis',
