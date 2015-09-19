@@ -1,4 +1,5 @@
 ![Build Status](https://travis-ci.org/seandavi/SDST.svg)
+![pypi downloads](https://img.shields.io/pypi/dm/SDST.svg)
 
 # Overview
 
