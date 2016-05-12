@@ -11,12 +11,12 @@ def addStrelkaHeaders(reader):
     can be manipulated to add new information and the writer will
     know what to do with it."""
 
-    reader.infos['TUMREF'] = vcf.parser._Info(id='TUMREF',num=1,type='Integer',desc="The depth of the REF allele in the tumor")
-    reader.infos['TUMALT'] = vcf.parser._Info(id='TUMALT',num=1,type='Integer',desc="The depth of the FIRST ALT allele in the tumor")
-    reader.infos['NORMREF'] = vcf.parser._Info(id='NORMREF',num=1,type='Integer',desc="The depth of the REF allele in the normal")
-    reader.infos['NORMALT'] = vcf.parser._Info(id='NORMALT',num=1,type='Integer',desc="The depth of the FIRST ALT allele in the normal")
-    reader.infos['TUMVAF'] = vcf.parser._Info(id='TUMVAF',num=1,type='Float',desc="The Variant Allele Frequency in the tumor")
-    reader.infos['TUMVARFRACTION'] = vcf.parser._Info(id='TUMVARFRACTION',num=1,type='Float',desc="The fraction of variant reads in the tumor versus the total (so 1.0 means all variant reads in the tumor)")
+    reader.infos['TUMREF'] = vcf.parser._Info(id='TUMREF',num=1,type='Integer',desc="The depth of the REF allele in the tumor",source=None,version=None)
+    reader.infos['TUMALT'] = vcf.parser._Info(id='TUMALT',num=1,type='Integer',desc="The depth of the FIRST ALT allele in the tumor",source=None,version=None)
+    reader.infos['NORMREF'] = vcf.parser._Info(id='NORMREF',num=1,type='Integer',desc="The depth of the REF allele in the normal",source=None,version=None)
+    reader.infos['NORMALT'] = vcf.parser._Info(id='NORMALT',num=1,type='Integer',desc="The depth of the FIRST ALT allele in the normal",source=None,version=None)
+    reader.infos['TUMVAF'] = vcf.parser._Info(id='TUMVAF',num=1,type='Float',desc="The Variant Allele Frequency in the tumor",source=None,version=None)
+    reader.infos['TUMVARFRACTION'] = vcf.parser._Info(id='TUMVARFRACTION',num=1,type='Float',desc="The fraction of variant reads in the tumor versus the total (so 1.0 means all variant reads in the tumor)",source=None,version=None)
     
 def modifyStrelkaRow(record,fixIndels=True):
     """Add info for strelka processing to vcf record
