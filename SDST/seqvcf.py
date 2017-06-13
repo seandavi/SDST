@@ -125,9 +125,9 @@ def basesAtPos(samfile, pos, chromname, minbasequal, minmapqual):
                 if(pos==73433494):
                     print(pos,bases)
                 if (pileupread.indel == 0 and pileupread.is_del == 0 and \
-                (pileupread.alignment.qual[pileupread.qpos]) >= minbasequal and \
-                float(pileupread.alignment.mapq) >= minmapqual):
-                    bases += chr(pileupread.alignment.seq[pileupread.qpos])
+                (pileupread.alignment.query_qualities[pileupread.query_position]) >= minbasequal and \
+                float(pileupread.alignment.mapping_quality) >= minmapqual):
+                    bases += pileupread.alignment.query_sequence[pileupread.query_position]
     return position, coverage, bases
 
 
@@ -148,9 +148,9 @@ def countBases(reader,outfile,bamfile,prefix='RNAC',vaf='MAF'):
     ALTCOUNT_NAME = prefix + "_ALT"
     VAF_NAME      = prefix + "_" + vaf
 
-    reader.infos[REFCOUNT_NAME] = vcf.parser._Info(id=REFCOUNT_NAME,num=1,type='Integer',desc='The count of REF alleles in the bamfile')
-    reader.infos[ALTCOUNT_NAME] = vcf.parser._Info(id=ALTCOUNT_NAME,num=1,type='Integer',desc='The count of ALT alleles in the bamfile')
-    reader.infos[VAF_NAME     ] = vcf.parser._Info(id=VAF_NAME,num=1,type='Float',desc='The fraction of ALT allele in the bamfile')
+    reader.infos[REFCOUNT_NAME] = vcf.parser._Info(id=REFCOUNT_NAME,num=1,type='Integer',desc='The count of REF alleles in the bamfile',source='',version='')
+    reader.infos[ALTCOUNT_NAME] = vcf.parser._Info(id=ALTCOUNT_NAME,num=1,type='Integer',desc='The count of ALT alleles in the bamfile',source='',version='')
+    reader.infos[VAF_NAME     ] = vcf.parser._Info(id=VAF_NAME,num=1,type='Float',desc='The fraction of ALT allele in the bamfile',source='',version='')
 
     writer = vcf.Writer(outfile,reader)
 

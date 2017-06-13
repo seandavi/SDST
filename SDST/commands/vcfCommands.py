@@ -8,7 +8,7 @@ import pysam
 
 def meltVcf(opts):
     if(opts.vcf):
-        f = open(opts.vcf,mode='r',errors='ignore')
+        f = open(opts.vcf,mode='r')
         v = vcf.Reader(f)
     else:
         v = vcf.Reader(sys.stdin)
@@ -35,7 +35,7 @@ def strelkaProcess(opts):
 
 def RNAcounts(opts):
     if(opts.vcf):
-        f = open(opts.vcf,mode='r',errors='ignore')
+        f = open(opts.vcf,mode='r')
         v = vcf.Reader(f)
     else:
         v = vcf.Reader(sys.stdin)
