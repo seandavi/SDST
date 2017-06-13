@@ -170,12 +170,3 @@ def countBases(reader,outfile,bamfile,prefix='RNAC',vaf='MAF'):
 
         writer.write_record(row)
 
-def addFisher(reader,outfile):
-    writer = vcf.Writer(outfile,reader)
-    reader.infos['LOG_FISHER'] = vcf.parser._Info(id='LOG_FISHER',num=1,type='Float',desc='Log10 of Fisher Exact Test p-value',source='',version='')
-    
-    for row in reader:
-        tumorcounts = row.genotype('TUMOR')['AD']
-        normalcounts = row.genotype('NORMAL')['AD']
-        row.INFO['LOG_FISHER'] = -math.log10(fisher.pvalue(tumorcounts[0],tumorcounts[1],normalcounts[0],normalcounts[1]).two_tail)
-        writer.write_record(row)
