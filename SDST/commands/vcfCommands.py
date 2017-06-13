@@ -3,6 +3,7 @@ import argparse
 from SDST.main import subparsers
 import SDST.seqvcf
 import SDST.strelka
+import SDST.mutect
 import vcf
 import pysam
 
@@ -31,6 +32,18 @@ def strelkaProcess(opts):
     else:
         outfile = sys.stdout
     SDST.strelka.processVcf(v,outfile)
+    outfile.close()
+
+def mutectProcess(opts):
+    if(opts.vcf):
+        v = vcf.Reader(filename=opts.vcf)
+    else:
+        v = vcf.Reader(sys.stdin)
+    if(opts.outfile):
+        outfile = open(opts.outfile,'w')
+    else:
+        outfile = sys.stdout
+    SDST.mutect.processVcf(v,outfile)
     outfile.close()
 
 def RNAcounts(opts):
@@ -73,6 +86,19 @@ strelka_parser.add_argument('-o','--outfile',
                             help='Filename of VCF file [default=stdout]')
 
 strelka_parser.set_defaults(func=strelkaProcess)
+
+
+mutect_parser = varscan_subparsers.add_parser('mutect',
+                                              help="process a vcf mutect-produced vcf file to add tumor/normal read count info fields (TUMREF,NORMREF,TUMALT,NORMALT,TUMVAF)")
+mutect_parser.add_argument('-f','--vcf',
+                            help='Filename of VCF file [default=stdin]')
+mutect_parser.add_argument('-o','--outfile',
+                            help='Filename of VCF file [default=stdout]')
+
+mutect_parser.set_defaults(func=mutectProcess)
+
+
+
 
 rnacount_parser = varscan_subparsers.add_parser('rnacount',
                                                 help="Count the number of REF and ALT alleles in a bamfile at each variant location in a VCF file.  The results are added to the VCF file in three new INFO tags, RNAC_REF, RNAC_ALT, and RNAC_MAF")

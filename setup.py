@@ -4,7 +4,7 @@ import sys, os, glob
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
-version = '0.9.9'
+version = '0.9.10'
 
 if sys.version_info < (2,7):
     print('SDST requires python 2.7 or higher')
@@ -27,6 +27,7 @@ setup(name='SDST',
       install_requires=[
           'PyVCF>=0.6.8',
           'pylev',
+          'fisher',
           'pysam>=0.11.2',
           #'python-Levenshtein'
       ],

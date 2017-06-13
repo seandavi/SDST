@@ -2,8 +2,8 @@ import vcf
 import fisher
 import math
 
-def addStrelkaHeaders(reader):
-    """Add strelka headers to a VCF reader
+def addMutectHeaders(reader):
+    """Add mutect headers to a VCF reader
     
     :param reader: a VCF reader object from pyVCF
     
@@ -21,41 +21,21 @@ def addStrelkaHeaders(reader):
     reader.infos['TUMVARFRACTION'] = vcf.parser._Info(id='TUMVARFRACTION',num=1,type='Float',desc="The fraction of variant reads in the tumor versus the total (so 1.0 means all variant reads in the tumor)",source=None,version=None)
     reader.infos['LOG_FISHER'] = vcf.parser._Info(id='LOG_FISHER',num=1,type='Float',desc="-Log10(Fisher Exact Test p-value)",source=None,version=None)
     
-def modifyStrelkaRow(record,fixIndels=True):
-    """Add info for strelka processing to vcf record
+def modifyMutectRow(record,fixIndels=True):
+    """Add info for mutect processing to vcf record
     
     :param record: a pyVCF record object
     """
-    if(record.is_snp or record.ALT[0] is None):
-        ref = record.REF
-        alt = record.ALT[0]
-        record.INFO['NORMREF']=getattr(record.samples[0].data,ref+'U')[0]
-        record.INFO['TUMREF']=getattr(record.samples[1].data,ref+'U')[0]
-        # strelka sometimes reports a non-passing variant as no "ALT" allele (no change)
-        if(alt is None): 
-            record.INFO['NORMALT']=0
-            record.INFO['TUMALT']=0
-            record.INFO['TUMVAF']=0
-            record.INFO['TUMVARFRACTION']=0
-        else:
-            alt = str(alt)
-            record.INFO['NORMALT']=getattr(record.samples[0].data,alt+'U')[0]
-            record.INFO['TUMALT']=getattr(record.samples[1].data,alt+'U')[0]
-            try:
-                record.INFO['TUMVAF']=float(record.INFO['TUMALT'])/(record.INFO['TUMALT']+record.INFO['TUMREF'])
-            except ZeroDivisionError:
-                record.INFO['TUMVAF']=0
-            try:
-                record.INFO['TUMVARFRACTION']=float(record.INFO['TUMALT'])/(record.INFO['TUMALT']+record.INFO['NORMALT'])
-            except ZeroDivisionError:
-                record.INFO['TUMVARFRACTION']=0
-        record.INFO['LOG_FISHER']=-math.log10(fisher.pvalue(record.INFO['TUMREF'],record.INFO['TUMALT'],record.INFO['NORMREF'],record.INFO['NORMALT']).two_tail)
-        return(record)
+    record.INFO['NORMREF']=record.genotype('NORMAL')['AD'][0]
+    record.INFO['TUMREF']=record.genotype('TUMOR')['AD'][0]
+    if(record.ALT is None): 
+        record.INFO['NORMALT']=0
+        record.INFO['TUMALT']=0
+        record.INFO['TUMVAF']=0
+        record.INFO['TUMVARFRACTION']=0
     else:
-        record.INFO['NORMREF']=getattr(record.samples[0].data,'TAR')[0]
-        record.INFO['NORMALT']=getattr(record.samples[0].data,'TIR')[0]
-        record.INFO['TUMREF']=getattr(record.samples[1].data,'TAR')[0]
-        record.INFO['TUMALT']=getattr(record.samples[1].data,'TIR')[0]
+        record.INFO['NORMALT']=record.genotype('NORMAL')['AD'][1]
+        record.INFO['TUMALT']=record.genotype('TUMOR')['AD'][1]
         try:
             record.INFO['TUMVAF']=float(record.INFO['TUMALT'])/(record.INFO['TUMALT']+record.INFO['TUMREF'])
         except ZeroDivisionError:
@@ -64,19 +44,13 @@ def modifyStrelkaRow(record,fixIndels=True):
             record.INFO['TUMVARFRACTION']=float(record.INFO['TUMALT'])/(record.INFO['TUMALT']+record.INFO['NORMALT'])
         except ZeroDivisionError:
             record.INFO['TUMVARFRACTION']=0
-        if(fixIndels):
-            record.REF=record.REF.replace('.','')
-            for i in range(len(record.ALT)):
-                if(not isinstance(record.ALT[i],vcf.model._Substitution)):
-                    return(None)
         record.INFO['LOG_FISHER']=-math.log10(fisher.pvalue(record.INFO['TUMREF'],record.INFO['TUMALT'],record.INFO['NORMREF'],record.INFO['NORMALT']).two_tail)
-        return(record)
-        
+    return(record)
 
 def processVcf(reader,outfile):
-    addStrelkaHeaders(reader)
+    addMutectHeaders(reader)
     writer = vcf.Writer(outfile,reader)
     for row in reader:
-        newrow = modifyStrelkaRow(row)
+        newrow = modifyMutectRow(row)
         if(newrow is not None):
             writer.write_record(newrow)
