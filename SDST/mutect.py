@@ -1,7 +1,16 @@
 import vcf
+
 import fisher
 import math
 
+def _fisherStrandBias(record):
+    A = record.genotype('TUMOR')['ALT_F1R2']
+    B = record.genotype('TUMOR')['ALT_F2R1']
+    C = record.genotype('TUMOR')['REF_F1R2']
+    D = record.genotype('TUMOR')['REF_F2R1']
+    FSB = -math.log10(fisher.pvalue(A,B,C,D).two_tail)
+    return(FSB)
+    
 def addMutectHeaders(reader):
     """Add mutect headers to a VCF reader
     
@@ -20,7 +29,7 @@ def addMutectHeaders(reader):
     reader.infos['TUMVAF'] = vcf.parser._Info(id='TUMVAF',num=1,type='Float',desc="The Variant Allele Frequency in the tumor",source=None,version=None)
     reader.infos['TUMVARFRACTION'] = vcf.parser._Info(id='TUMVARFRACTION',num=1,type='Float',desc="The fraction of variant reads in the tumor versus the total (so 1.0 means all variant reads in the tumor)",source=None,version=None)
     reader.infos['LOG_FISHER'] = vcf.parser._Info(id='LOG_FISHER',num=1,type='Float',desc="-Log10(Fisher Exact Test p-value)",source=None,version=None)
-    
+    reader.infos['FSB']        = vcf.parser._Info(id='FSB',num=1,type='Float',desc="-Log10(Fisher Exact Test strand bias)",source=None,version=None)
 def modifyMutectRow(record,fixIndels=True):
     """Add info for mutect processing to vcf record
     
@@ -45,6 +54,7 @@ def modifyMutectRow(record,fixIndels=True):
         except ZeroDivisionError:
             record.INFO['TUMVARFRACTION']=0
         record.INFO['LOG_FISHER']=-math.log10(fisher.pvalue(record.INFO['TUMREF'],record.INFO['TUMALT'],record.INFO['NORMREF'],record.INFO['NORMALT']).two_tail)
+        record.INFO['FSB'] = _fisherStrandBias(record)
     return(record)
 
 def processVcf(reader,outfile):
