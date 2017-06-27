@@ -3,7 +3,4 @@ from SDST.main import parser
 from SDST.commands import *
 
 args = parser.parse_args()
-try:
-    args.func(args)
-except:
-    parser.print_help()
+args.func(args)
